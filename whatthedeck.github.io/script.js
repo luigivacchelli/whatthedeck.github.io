@@ -29,12 +29,12 @@
 const DECKS = [
   {
     id: 1,
-    name: "De La Rue Standard Pack",
-    backImage: "images/backs/deck-1.jpg",
-    year: "c. 1880",
-    origin: "England",
-    manufacturer: "Thomas De La Rue",
-    description: "Thomas De La Rue & Co. began producing playing cards in the 1830s after acquiring the stamp duty contract from the British government. Their Standard Pack became the benchmark for English-suited decks throughout the Victorian era. The characteristic red diamond-pattern back was widely imitated and remained in near-continuous production for over fifty years. De La Rue's cards were noted for their high-quality lithography and crisp corner indices, among the first English manufacturers to adopt them."
+    name: "Bicycle League Back",
+    backImage: "decks/bicycle/leagueback/back/blueleagueback.png",
+    year: "c. 1888",
+    origin: "U.S.",
+    manufacturer: "USPCC - US Playing Card Company",
+    description: "Introduced in 1888 (revised from 1893). Discontinued in 1960. The original 1888 US8 issue of this deck lacked the thin white border (see the first two examples, above). Some later US8b decks and all issues thereafter feature the white border. Complete decks of the borderless variant are quite rare. The basis for revising the start date for League is a single card from my collection: a League back version of a very rare colored joker that was paired with some US8 decks. League was reissued at some point in the 1980s (I think) and available well into the 1990s. Also released in 1990 in a box labeled No. 71 Rummy featuring two decks, one purple and one red, with multiple indices on the faces (see the last image, below). Most early Bicycle designs were updated to be completely symmetrical. The League back is unusual in that its design featured the one-way central winged wheel motif for its entire very long run. It seems highly likely that “League” refers to the League of American Wheelmen (L.A.W.), a membership organization established in 1880 as an advocacy group for bicyclists, now known as the League of American Bicyclists. Indeed, the central motif on this back design, a bicycle wheel with three wings, is virtually identical to the L.A.W. logo. Many early Bicycle back designs featured this design element (most including the star in the hub that was usually part of the logo), among them Acorn, Emblem, Model No. 1, Racer No. 1, Tangent No. 1, Tri-Tire No. 1, and the joker of the rare Junior No. 21 decks. See two early examples of L.A.W. membership cards, below, as well as a tobacco tin that promotes the League of American Wheelmen. The final image is of a deck owned by Hiroki Terashima that was distributed in the Philippines. Besides the unusual tax stamp, the box flap also has the legend, “Marca Registrada Cuba.” I will have to check my Cuban Bicycle decks to see if they also have this printed on the flap."
   },
   {
     id: 2,
