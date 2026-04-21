@@ -5,12 +5,9 @@
   --gold-light: #e0be78;
   --gold-dark: #8a6820;
   --case-black: #111;
-  --case-edge: #1e1e1e;
   --page-grey: #404040;
-  --page-grey-light: #4a4a4a;
   --seam: rgba(255, 255, 255, 0.18);
   --pocket-tint: rgba(210, 228, 248, 0.07);
-  --plastic-glare: rgba(255, 255, 255, 0.22);
 }
 
 html { height: 100%; }
@@ -79,24 +76,19 @@ body {
 .view { display: none; width: 100%; max-width: 1300px; padding: 0 1rem 2rem; }
 .view.active { display: block; }
 
-/* ═══════════════════════════════════════════
-   BINDER — black zippered portfolio case
-═══════════════════════════════════════════ */
+/* ─── BINDER ─── */
 .binder {
-  /* Black case walls — thick border */
   background: var(--case-black);
   border-radius: 18px;
   padding: 22px;
   min-height: calc(100vh - 180px);
   position: relative;
-  /* Outer edges of the case */
   box-shadow:
     0 0 0 1px #2a2a2a,
     0 50px 120px rgba(0,0,0,0.95),
     inset 0 1px 0 rgba(255,255,255,0.04);
 }
-
-/* Zipper track: thin metallic strip around inside of case */
+/* Zipper track */
 .binder::before {
   content: '';
   position: absolute;
@@ -106,8 +98,7 @@ body {
   pointer-events: none;
   z-index: 2;
 }
-
-/* Zipper pull at bottom center */
+/* Zipper pull */
 .binder::after {
   content: '';
   position: absolute;
@@ -123,14 +114,12 @@ body {
   z-index: 3;
 }
 
-/* ─── BINDER INTERIOR — dark grey page ─── */
+/* ─── BINDER INTERIOR ─── */
 .binder-interior {
   background: var(--page-grey);
   border-radius: 8px;
   padding: 28px 28px 48px;
   min-height: calc(100vh - 224px);
-  position: relative;
-  /* Subtle inner shadow to suggest depth */
   box-shadow: inset 0 2px 12px rgba(0,0,0,0.5);
 }
 
@@ -144,19 +133,12 @@ body {
   margin-bottom: 1.4rem;
 }
 
-/* ═══════════════════════════════════════════
-   PLASTIC SLEEVE SHEET
-   Sits over the grey page like a real pocket
-   page inserted into the binder
-═══════════════════════════════════════════ */
+/* ─── PLASTIC SHEET ─── */
 .plastic-sheet {
   position: relative;
-  /* Barely-there tint — the clear plastic over the grey */
   background: rgba(220, 235, 255, 0.03);
   border-radius: 3px;
-  /* Outer edge of the plastic sheet */
   border: 1px solid rgba(255,255,255,0.08);
-  /* Diagonal plastic sheen across the whole sheet */
   overflow: hidden;
 }
 .plastic-sheet::before {
@@ -170,39 +152,41 @@ body {
   z-index: 10;
 }
 
-/* ─── CARD GRID — 3 columns ─── */
+/* ─── CARD GRID ─── */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
 }
 
-/* ─── SLEEVE WRAPPER = one pocket cell ─── */
+/* ─── SLEEVE WRAPPER (one pocket cell) ─── */
 .sleeve-wrapper {
-  /* Stitched seam border — the heat-sealed lines between pockets */
   border: 2px solid var(--seam);
   padding: 10px 10px 14px;
   background: var(--pocket-tint);
   cursor: pointer;
   position: relative;
   transition: background 0.15s;
+  animation: fadeUp 0.3s ease both;
 }
-.sleeve-wrapper:hover {
-  background: rgba(210, 228, 248, 0.14);
-}
+.sleeve-wrapper:hover { background: rgba(210, 228, 248, 0.14); }
+.sleeve-wrapper:nth-child(2) { animation-delay: 0.04s; }
+.sleeve-wrapper:nth-child(3) { animation-delay: 0.08s; }
+.sleeve-wrapper:nth-child(4) { animation-delay: 0.12s; }
+.sleeve-wrapper:nth-child(5) { animation-delay: 0.16s; }
+.sleeve-wrapper:nth-child(6) { animation-delay: 0.20s; }
 
-/* ─── SLEEVE = clear plastic pocket ─── */
+/* ─── SLEEVE (the clear plastic pocket) ─── */
 .sleeve {
   width: 100%;
   aspect-ratio: 5 / 7;
   position: relative;
   overflow: hidden;
   border-radius: 2px;
-  /* Very faint pocket shadow */
+  background: #2a2a2a; /* neutral placeholder background */
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
 }
-
-/* Plastic glare across each pocket */
+/* Plastic glare */
 .sleeve::before {
   content: '';
   position: absolute;
@@ -214,91 +198,35 @@ body {
   z-index: 5;
 }
 
-/* ─── PLAYING CARD inside the sleeve ─── */
-.card {
+/* ─── CARD IMAGE ─── */
+.card-img {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   border-radius: 2px;
-  overflow: hidden;
-  background: white;
+  z-index: 1;
 }
 
-/* ── Card back designs ── */
-.card-back-1 {
+/*
+  Fallback style when image file is missing.
+  The sleeve gets a subtle cross-hatch pattern
+  and shows the deck name label underneath.
+  Remove this once real images are in place.
+*/
+.sleeve.img-missing {
   background:
-    repeating-linear-gradient(45deg,  #8b0000 0px, #8b0000 2px, transparent 2px, transparent 8px),
-    repeating-linear-gradient(-45deg, #8b0000 0px, #8b0000 2px, transparent 2px, transparent 8px),
-    #fdf8f0;
-  border: 6px solid #8b0000;
+    repeating-linear-gradient( 45deg, transparent, transparent 8px, rgba(255,255,255,0.04) 8px, rgba(255,255,255,0.04) 10px),
+    repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(255,255,255,0.04) 8px, rgba(255,255,255,0.04) 10px),
+    #252525;
 }
-.card-back-1::after {
-  content: '★';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3.5rem; color: rgba(139,0,0,0.18);
+.face-sleeve.img-missing {
+  background: #252525;
 }
 
-.card-back-2 {
-  background:
-    radial-gradient(circle at 50% 50%, #1a3a6b 30%, transparent 30%),
-    repeating-conic-gradient(#1a3a6b 0deg, #1a3a6b 10deg, #f0e8d0 10deg, #f0e8d0 20deg);
-  background-size: 100% 100%, 40px 40px;
-  border: 6px solid #1a3a6b;
-}
-
-.card-back-3 {
-  background: #0a4a2a;
-  border: 6px solid #0a4a2a;
-  background-image:
-    repeating-linear-gradient(0deg,  rgba(255,215,0,0.12) 0px, rgba(255,215,0,0.12) 1px, transparent 1px, transparent 12px),
-    repeating-linear-gradient(90deg, rgba(255,215,0,0.12) 0px, rgba(255,215,0,0.12) 1px, transparent 1px, transparent 12px);
-}
-.card-back-3::after {
-  content: '♦';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 4.5rem; color: rgba(255,215,0,0.28);
-}
-
-.card-back-4 {
-  background:
-    repeating-linear-gradient(0deg,  #2c0050 0px, #2c0050 1px, transparent 1px, transparent 14px),
-    repeating-linear-gradient(90deg, #2c0050 0px, #2c0050 1px, transparent 1px, transparent 14px),
-    #8b00b5;
-  border: 6px solid #2c0050;
-}
-.card-back-4::before {
-  content: '✦ ✦ ✦';
-  position: absolute; bottom: 10px; left: 0; right: 0;
-  text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.3);
-  letter-spacing: 5px;
-}
-
-.card-back-5 {
-  background: linear-gradient(135deg, #b8860b 25%, #daa520 50%, #b8860b 75%);
-  border: 6px solid #8b6914;
-}
-.card-back-5::after {
-  content: '⚜';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 4rem; color: rgba(139,105,20,0.32);
-}
-
-.card-back-6 {
-  background: #1c1c2e;
-  border: 6px solid #2e2e4a;
-  background-image: radial-gradient(circle, rgba(150,120,255,0.15) 1px, transparent 1px);
-  background-size: 12px 12px;
-}
-.card-back-6::after {
-  content: '✵';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 4.5rem; color: rgba(150,120,255,0.32);
-}
-
-/* Deck label under each pocket */
+/* Sleeve label */
 .sleeve-label {
   display: block;
   text-align: center;
@@ -312,9 +240,7 @@ body {
   letter-spacing: 0.03em;
 }
 
-/* ═══════════════════════════════════════════
-   DECK DETAIL VIEW
-═══════════════════════════════════════════ */
+/* ─── DECK DETAIL ─── */
 .back-btn {
   display: inline-flex;
   align-items: center;
@@ -381,54 +307,63 @@ body {
   color: rgba(255,255,255,0.65);
 }
 
-/* Face card grid */
+/* ─── FACE GRID ─── */
 .face-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
   gap: 0;
 }
+
+/* One pocket per face card */
 .face-sleeve {
   border: 1.5px solid var(--seam);
-  padding: 4px;
+  padding: 3px;
   background: var(--pocket-tint);
   aspect-ratio: 5 / 7;
   position: relative;
   overflow: hidden;
 }
+/* Plastic glare on each face pocket */
 .face-sleeve::before {
   content: '';
   position: absolute;
   top: -40%; left: -30%;
   width: 60%; height: 130%;
-  background: linear-gradient(108deg, rgba(255,255,255,0.16) 0%, transparent 55%);
+  background: linear-gradient(108deg, rgba(255,255,255,0.14) 0%, transparent 55%);
   transform: rotate(-4deg);
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
-.face-card {
+
+/* The face card image */
+.face-sleeve .card-img {
   position: absolute;
-  inset: 3px;
-  background: white;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 1px;
+  z-index: 1;
+}
+
+/*
+  Text fallback shown when face card image is missing.
+  Shows rank + suit symbol so the grid stays readable.
+*/
+.face-fallback {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.face-card .rank {
-  position: absolute;
-  top: 2px; left: 3px;
-  font-size: 0.5rem;
   font-family: 'Playfair Display', serif;
+  font-size: 0.6rem;
   font-weight: 700;
-  line-height: 1;
+  color: rgba(255,255,255,0.25);
+  z-index: 0; /* sits behind the image; visible only when image is missing */
 }
-.face-card .suit-center { font-size: 0.85rem; }
-.face-card.red   { color: #b30000; }
-.face-card.black { color: #111; }
 
-/* ═══════════════════════════════════════════
-   SUBMIT VIEW
-═══════════════════════════════════════════ */
+/* ─── SUBMIT VIEW ─── */
 .submit-container {
   display: grid;
   grid-template-columns: 1fr 1.6fr;
@@ -527,16 +462,9 @@ body {
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-.submit-btn:hover {
-  background: var(--gold-dark);
-  color: #111;
-}
+.submit-btn:hover { background: var(--gold-dark); color: #111; }
 
-.radio-group {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.4rem;
-}
+.radio-group { display: flex; gap: 1.5rem; margin-top: 0.4rem; }
 .radio-group label {
   display: flex;
   align-items: center;
@@ -583,11 +511,3 @@ footer {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.sleeve-wrapper {
-  animation: fadeUp 0.3s ease both;
-}
-.sleeve-wrapper:nth-child(2) { animation-delay: 0.04s; }
-.sleeve-wrapper:nth-child(3) { animation-delay: 0.08s; }
-.sleeve-wrapper:nth-child(4) { animation-delay: 0.12s; }
-.sleeve-wrapper:nth-child(5) { animation-delay: 0.16s; }
-.sleeve-wrapper:nth-child(6) { animation-delay: 0.20s; }
