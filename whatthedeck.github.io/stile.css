@@ -1,0 +1,593 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c8a04a;
+  --gold-light: #e0be78;
+  --gold-dark: #8a6820;
+  --case-black: #111;
+  --case-edge: #1e1e1e;
+  --page-grey: #404040;
+  --page-grey-light: #4a4a4a;
+  --seam: rgba(255, 255, 255, 0.18);
+  --pocket-tint: rgba(210, 228, 248, 0.07);
+  --plastic-glare: rgba(255, 255, 255, 0.22);
+}
+
+html { height: 100%; }
+
+body {
+  background: #060606;
+  min-height: 100vh;
+  font-family: 'Crimson Text', Georgia, serif;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ─── SITE HEADER ─── */
+.site-header {
+  width: 100%;
+  max-width: 1300px;
+  padding: 1.8rem 2rem 1.2rem;
+  text-align: center;
+}
+.site-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.9);
+  line-height: 1.1;
+}
+.site-header .subtitle {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold-light);
+  opacity: 0.6;
+  margin-top: 0.3rem;
+  letter-spacing: 0.06em;
+}
+.header-rule {
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0.8rem auto 0;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 0.9rem;
+}
+.nav-links a {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #aaa;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: color 0.2s, opacity 0.2s;
+  cursor: pointer;
+}
+.nav-links a:hover { color: var(--gold-light); opacity: 1; }
+
+/* ─── VIEWS ─── */
+.view { display: none; width: 100%; max-width: 1300px; padding: 0 1rem 2rem; }
+.view.active { display: block; }
+
+/* ═══════════════════════════════════════════
+   BINDER — black zippered portfolio case
+═══════════════════════════════════════════ */
+.binder {
+  /* Black case walls — thick border */
+  background: var(--case-black);
+  border-radius: 18px;
+  padding: 22px;
+  min-height: calc(100vh - 180px);
+  position: relative;
+  /* Outer edges of the case */
+  box-shadow:
+    0 0 0 1px #2a2a2a,
+    0 50px 120px rgba(0,0,0,0.95),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* Zipper track: thin metallic strip around inside of case */
+.binder::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 12px;
+  border: 1px solid #2e2e2e;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Zipper pull at bottom center */
+.binder::after {
+  content: '';
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 10px;
+  background: #333;
+  border-radius: 3px;
+  border: 1px solid #444;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  z-index: 3;
+}
+
+/* ─── BINDER INTERIOR — dark grey page ─── */
+.binder-interior {
+  background: var(--page-grey);
+  border-radius: 8px;
+  padding: 28px 28px 48px;
+  min-height: calc(100vh - 224px);
+  position: relative;
+  /* Subtle inner shadow to suggest depth */
+  box-shadow: inset 0 2px 12px rgba(0,0,0,0.5);
+}
+
+/* ─── PAGE LABEL ─── */
+.page-label {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.4rem;
+}
+
+/* ═══════════════════════════════════════════
+   PLASTIC SLEEVE SHEET
+   Sits over the grey page like a real pocket
+   page inserted into the binder
+═══════════════════════════════════════════ */
+.plastic-sheet {
+  position: relative;
+  /* Barely-there tint — the clear plastic over the grey */
+  background: rgba(220, 235, 255, 0.03);
+  border-radius: 3px;
+  /* Outer edge of the plastic sheet */
+  border: 1px solid rgba(255,255,255,0.08);
+  /* Diagonal plastic sheen across the whole sheet */
+  overflow: hidden;
+}
+.plastic-sheet::before {
+  content: '';
+  position: absolute;
+  top: -40%; left: -15%;
+  width: 45%; height: 160%;
+  background: linear-gradient(108deg, rgba(255,255,255,0.06) 0%, transparent 55%);
+  transform: rotate(-3deg);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── CARD GRID — 3 columns ─── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+/* ─── SLEEVE WRAPPER = one pocket cell ─── */
+.sleeve-wrapper {
+  /* Stitched seam border — the heat-sealed lines between pockets */
+  border: 2px solid var(--seam);
+  padding: 10px 10px 14px;
+  background: var(--pocket-tint);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+.sleeve-wrapper:hover {
+  background: rgba(210, 228, 248, 0.14);
+}
+
+/* ─── SLEEVE = clear plastic pocket ─── */
+.sleeve {
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  /* Very faint pocket shadow */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+/* Plastic glare across each pocket */
+.sleeve::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -10%;
+  width: 48%; height: 170%;
+  background: linear-gradient(112deg, rgba(255,255,255,0.18) 0%, transparent 50%);
+  transform: rotate(-4deg);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ─── PLAYING CARD inside the sleeve ─── */
+.card {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  overflow: hidden;
+  background: white;
+}
+
+/* ── Card back designs ── */
+.card-back-1 {
+  background:
+    repeating-linear-gradient(45deg,  #8b0000 0px, #8b0000 2px, transparent 2px, transparent 8px),
+    repeating-linear-gradient(-45deg, #8b0000 0px, #8b0000 2px, transparent 2px, transparent 8px),
+    #fdf8f0;
+  border: 6px solid #8b0000;
+}
+.card-back-1::after {
+  content: '★';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem; color: rgba(139,0,0,0.18);
+}
+
+.card-back-2 {
+  background:
+    radial-gradient(circle at 50% 50%, #1a3a6b 30%, transparent 30%),
+    repeating-conic-gradient(#1a3a6b 0deg, #1a3a6b 10deg, #f0e8d0 10deg, #f0e8d0 20deg);
+  background-size: 100% 100%, 40px 40px;
+  border: 6px solid #1a3a6b;
+}
+
+.card-back-3 {
+  background: #0a4a2a;
+  border: 6px solid #0a4a2a;
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(255,215,0,0.12) 0px, rgba(255,215,0,0.12) 1px, transparent 1px, transparent 12px),
+    repeating-linear-gradient(90deg, rgba(255,215,0,0.12) 0px, rgba(255,215,0,0.12) 1px, transparent 1px, transparent 12px);
+}
+.card-back-3::after {
+  content: '♦';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4.5rem; color: rgba(255,215,0,0.28);
+}
+
+.card-back-4 {
+  background:
+    repeating-linear-gradient(0deg,  #2c0050 0px, #2c0050 1px, transparent 1px, transparent 14px),
+    repeating-linear-gradient(90deg, #2c0050 0px, #2c0050 1px, transparent 1px, transparent 14px),
+    #8b00b5;
+  border: 6px solid #2c0050;
+}
+.card-back-4::before {
+  content: '✦ ✦ ✦';
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.3);
+  letter-spacing: 5px;
+}
+
+.card-back-5 {
+  background: linear-gradient(135deg, #b8860b 25%, #daa520 50%, #b8860b 75%);
+  border: 6px solid #8b6914;
+}
+.card-back-5::after {
+  content: '⚜';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; color: rgba(139,105,20,0.32);
+}
+
+.card-back-6 {
+  background: #1c1c2e;
+  border: 6px solid #2e2e4a;
+  background-image: radial-gradient(circle, rgba(150,120,255,0.15) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+.card-back-6::after {
+  content: '✵';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4.5rem; color: rgba(150,120,255,0.32);
+}
+
+/* Deck label under each pocket */
+.sleeve-label {
+  display: block;
+  text-align: center;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.03em;
+}
+
+/* ═══════════════════════════════════════════
+   DECK DETAIL VIEW
+═══════════════════════════════════════════ */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.back-btn:hover { color: var(--gold-light); }
+.back-btn::before { content: '←'; font-style: normal; margin-right: 2px; }
+
+.deck-header { margin-bottom: 2rem; }
+.deck-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  line-height: 1.2;
+}
+.deck-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+}
+
+.deck-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 700px) { .deck-layout { grid-template-columns: 1fr; } }
+
+.deck-info {
+  padding: 1.5rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  border-left: 3px solid var(--gold-dark);
+}
+.deck-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.deck-info p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.65);
+}
+
+/* Face card grid */
+.face-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 0;
+}
+.face-sleeve {
+  border: 1.5px solid var(--seam);
+  padding: 4px;
+  background: var(--pocket-tint);
+  aspect-ratio: 5 / 7;
+  position: relative;
+  overflow: hidden;
+}
+.face-sleeve::before {
+  content: '';
+  position: absolute;
+  top: -40%; left: -30%;
+  width: 60%; height: 130%;
+  background: linear-gradient(108deg, rgba(255,255,255,0.16) 0%, transparent 55%);
+  transform: rotate(-4deg);
+  z-index: 2;
+  pointer-events: none;
+}
+.face-card {
+  position: absolute;
+  inset: 3px;
+  background: white;
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.face-card .rank {
+  position: absolute;
+  top: 2px; left: 3px;
+  font-size: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  line-height: 1;
+}
+.face-card .suit-center { font-size: 0.85rem; }
+.face-card.red   { color: #b30000; }
+.face-card.black { color: #111; }
+
+/* ═══════════════════════════════════════════
+   SUBMIT VIEW
+═══════════════════════════════════════════ */
+.submit-container {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 700px) { .submit-container { grid-template-columns: 1fr; } }
+
+.submit-intro {
+  padding: 1.8rem 1.5rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  border-left: 3px solid var(--gold-dark);
+}
+.submit-intro h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.9rem;
+  color: #f0f0f0;
+}
+.submit-intro p {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 0.7rem;
+}
+
+.submit-form {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.form-section { margin-bottom: 1.3rem; }
+.form-section label {
+  display: block;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.4rem;
+}
+.form-section input,
+.form-section select,
+.form-section textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  background: rgba(255,255,255,0.05);
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  color: #ddd;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-section select option { background: #2a2a2a; }
+.form-section input:focus,
+.form-section textarea:focus,
+.form-section select:focus {
+  border-color: var(--gold-dark);
+  box-shadow: 0 0 0 2px rgba(200,160,74,0.12);
+}
+.form-section textarea { resize: vertical; min-height: 100px; }
+
+.upload-box {
+  border: 1.5px dashed rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.upload-box:hover {
+  border-color: var(--gold-dark);
+  background: rgba(200,160,74,0.04);
+}
+.upload-box input { display: none; }
+.upload-icon { font-size: 1.8rem; margin-bottom: 0.4rem; opacity: 0.3; }
+.upload-box p { font-size: 0.88rem; color: rgba(255,255,255,0.35); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.06);
+  color: var(--gold);
+  border: 1px solid var(--gold-dark);
+  border-radius: 3px;
+  font-family: 'IM Fell English', serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.submit-btn:hover {
+  background: var(--gold-dark);
+  color: #111;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.4rem;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+}
+
+/* ─── SUCCESS STATE ─── */
+.success-msg {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+  border: 1px solid rgba(200,160,74,0.2);
+  color: rgba(255,255,255,0.7);
+}
+.success-msg .check { font-size: 2.2rem; margin-bottom: 1rem; color: var(--gold); }
+.success-msg h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #f0f0f0;
+}
+.success-msg a { color: var(--gold-dark); }
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 1.5rem;
+  text-align: center;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.18);
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sleeve-wrapper {
+  animation: fadeUp 0.3s ease both;
+}
+.sleeve-wrapper:nth-child(2) { animation-delay: 0.04s; }
+.sleeve-wrapper:nth-child(3) { animation-delay: 0.08s; }
+.sleeve-wrapper:nth-child(4) { animation-delay: 0.12s; }
+.sleeve-wrapper:nth-child(5) { animation-delay: 0.16s; }
+.sleeve-wrapper:nth-child(6) { animation-delay: 0.20s; }

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cartomancer's Archive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+
+<header class="site-header">
+  <h1>What the Deck</h1>
+  <p class="subtitle">A catalogue of playing cards through the centuries</p>
+  <div class="header-rule"></div>
+  <nav class="nav-links">
+    <a onclick="showView('gallery')">Collection</a>
+    <a onclick="showView('submit')">Submit a Deck</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<!-- VIEW: GALLERY -->
+<main class="view active" id="view-gallery">
+  <div class="binder">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <div class="tab-indicator"></div>
+    <p class="page-label">Vol. I — Card Backs</p>
+    <div class="card-grid" id="gallery-grid"></div>
+  </div>
+</main>
+
+<!-- VIEW: DECK DETAIL -->
+<main class="view" id="view-deck">
+  <div class="binder">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <button class="back-btn" onclick="showView('gallery')">Back to Collection</button>
+    <div class="deck-header">
+      <h2 id="deck-title">Deck Name</h2>
+      <div class="deck-meta">
+        <span id="deck-date">–</span>
+        <span id="deck-origin">–</span>
+        <span id="deck-manufacturer">–</span>
+      </div>
+    </div>
+    <div class="deck-layout">
+      <div id="deck-info-col">
+        <div class="deck-info">
+          <h3>History &amp; Description</h3>
+          <p id="deck-description">–</p>
+        </div>
+      </div>
+      <div>
+        <p class="page-label" style="margin-bottom:1rem;">Full Deck — Face Up</p>
+        <div class="face-grid" id="face-grid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- VIEW: SUBMIT -->
+<main class="view" id="view-submit">
+  <div class="binder">
+    <div class="rings">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+    </div>
+    <p class="page-label">Submit a Deck or Additional Information</p>
+    <div class="submit-container">
+      <div class="submit-intro">
+        <h2>Contribute to the Archive</h2>
+        <p>The Cartomancer's Archive grows through the generosity of collectors, historians, and enthusiasts. If you have a deck not yet catalogued, or additional knowledge about one already listed, we welcome your contribution.</p>
+        <p>High-resolution scans are preferred — at least 300 dpi. All submissions are reviewed before publication and credited to the contributor.</p>
+        <p>For fragile or rare specimens, contact the Archive directly before scanning.</p>
+      </div>
+
+      <div id="submit-form-area">
+        <form class="submit-form" onsubmit="handleSubmit(event)">
+          <div class="form-section">
+            <label>Submission type</label>
+            <div class="radio-group">
+              <label><input type="radio" name="sub-type" value="new" checked onchange="toggleExisting(this)"> New deck</label>
+              <label><input type="radio" name="sub-type" value="existing" onchange="toggleExisting(this)"> Add to existing</label>
+            </div>
+          </div>
+
+          <div class="form-section" id="existing-select-row" style="display:none">
+            <label>Existing deck</label>
+            <select>
+              <option value="">— Select a deck —</option>
+              <option>De La Rue Standard Pack (1880)</option>
+              <option>Dondorf Rhinegold (1906)</option>
+              <option>Fournier No. 26 (1924)</option>
+              <option>USPC Bicycle Rider Back (1885)</option>
+              <option>Congress Playing Cards (1881)</option>
+              <option>NYCC Transformation Deck (1878)</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-section">
+              <label>Deck name</label>
+              <input type="text" placeholder="e.g. Dondorf Rhinegold">
+            </div>
+            <div class="form-section">
+              <label>Year / Period</label>
+              <input type="text" placeholder="e.g. 1906 or c.1900–1910">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-section">
+              <label>Country of origin</label>
+              <input type="text" placeholder="e.g. Germany">
+            </div>
+            <div class="form-section">
+              <label>Manufacturer</label>
+              <input type="text" placeholder="e.g. B. Dondorf">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <label>Description &amp; History</label>
+            <textarea placeholder="Describe the deck — its design, historical context, notable features, provenance, or anything else of archival interest."></textarea>
+          </div>
+
+          <div class="form-section">
+            <label>Card scans</label>
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+              <input type="file" id="file-input" accept="image/*" multiple>
+              <div class="upload-icon">⬆</div>
+              <p>Click to upload scans, or drag and drop</p>
+              <p style="font-size:0.78rem; margin-top:0.3rem;">PNG, TIFF or JPG · 300 dpi minimum</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-section">
+              <label>Your name</label>
+              <input type="text" placeholder="As you'd like to be credited">
+            </div>
+            <div class="form-section">
+              <label>Email address</label>
+              <input type="email" placeholder="For correspondence only">
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Send to the Archive →</button>
+        </form>
+
+        <div class="success-msg" id="success-msg">
+          <div class="check">✦</div>
+          <h3>Received with thanks</h3>
+          <p>Your submission has been sent to the Archive. We will be in touch if we have questions, and will notify you when the entry is published.</p>
+          <br>
+          <a onclick="showView('gallery')" style="cursor:pointer; color: var(--gold-dark); font-family:'IM Fell English',serif; font-style:italic;">← Return to the Collection</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>What the Deck · Est. 2026 · All rights belong to original publishers</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
